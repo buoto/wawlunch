@@ -1,0 +1,17 @@
+.mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mobile__device {
+    height: 500px;
+}
+
+.mobile__badge {
+    width: 200px;
+}
+
+.mobile__badge:hover {
+    cursor: pointer;
+}

@@ -1,0 +1,33 @@
+.step {
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+}
+
+.step__icon {
+    padding: 20px;
+}
+
+.step:nth-child(even) {
+    justify-content: flex-end;
+}
+
+.step:nth-child(even) .step__icon {
+    order: 1;
+}
+
+.step:nth-child(even) .step__arrow {
+    order: -1;
+    transform: scale(-1, 1);
+}
+
+.step__arrow {
+    width: 200px;
+    height: 50px;
+    margin: 50px 50px 0;
+}
+
+.step:last-child .step__arrow {
+    display: none;
+}

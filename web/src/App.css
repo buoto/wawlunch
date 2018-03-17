@@ -6,3 +6,12 @@
 body {
     font-family: 'Noto Sans', sans-serif;
 }
+
+.app {
+    display: flex;
+    justify-content: center;
+}
+
+.app > * {
+    padding: 30px;
+}
