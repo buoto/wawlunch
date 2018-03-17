@@ -17,8 +17,8 @@ public class PlaceProvider {
 
     public List<Place> getPlaces() {
         return Arrays.asList(
-                new Place("Place 1"),
-                new Place("Place 2")
+            new Place("Aioli", 52.2360099, 21.011496),
+            new Place("Orzo", 52.2223586, 21.0152604)
         );
     }
 
