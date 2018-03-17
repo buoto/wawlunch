@@ -1,0 +1,42 @@
+.contact__form {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact__form--columns {
+    display: flex;
+}
+
+.contact__form--row {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact__form--row > *,
+.contact__form--textarea {
+    margin: 3px;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+}
+
+.contact__form--row:last-child {
+    flex-grow: 1;
+}
+
+.contact__form--button {
+    background-color: #546e7a;
+    padding: 10px 20px;
+    border: 1px solid #fff;
+    color: inherit;
+    width: 150px;
+    align-self: center;
+    border-radius: 3px;
+    margin: 10px;
+}
+
+.contact__form--textarea {
+    resize: none;
+    flex-grow: 1;
+    width: 400px;
+}

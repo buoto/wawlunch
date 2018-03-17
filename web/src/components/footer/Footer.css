@@ -1,0 +1,9 @@
+.footer {
+    border-top: 1px solid #fff;
+    padding: 20px 30px;
+    text-align: center;
+}
+
+.footer > * {
+    margin: 0;
+}
