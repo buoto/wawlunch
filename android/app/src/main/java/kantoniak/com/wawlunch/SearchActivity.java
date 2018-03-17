@@ -64,9 +64,7 @@ public class SearchActivity extends Activity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(52.2223586, 21.0152604), 13));
-
         fetchResults();
     }
 }

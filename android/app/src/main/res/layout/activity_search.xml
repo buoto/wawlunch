@@ -15,6 +15,11 @@
         android:layout_weight="1"
         />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDivider"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_result_list"
         android:layout_width="match_parent"
