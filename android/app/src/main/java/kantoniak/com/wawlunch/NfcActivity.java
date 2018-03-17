@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
+import kantoniak.com.wawlunch.nfc.NfcUtil;
+
 public class NfcActivity extends Activity {
 
     private static final String TAG = NfcActivity.class.getSimpleName();
@@ -48,10 +50,7 @@ public class NfcActivity extends Activity {
 
             Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
-            NdefRecord record = NdefRecord.createMime("application/com.kantoniak.wawlunch", "42".getBytes());
-            NdefMessage message = new NdefMessage(new NdefRecord[] { record });
-
-            if (NfcActivity.writeTag(message, detectedTag)) {
+            if (NfcUtil.writeTag(42, detectedTag)) {
                 Log.i(TAG, "OK");
             } else {
                 Log.e(TAG, "NIEOK");
@@ -59,55 +58,12 @@ public class NfcActivity extends Activity {
         }
 
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
-            Log.i(TAG, "DISCOVERED");
+            Log.i(TAG, "ACTION_NDEF_DISCOVERED");
 
-            Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-            Log.i(TAG, "RAW_MSGS " + (rawMsgs == null ? 0 : 1));
-
-            if (rawMsgs == null) {
-                return;
+            Integer tableId = NfcUtil.readId(intent);
+            if (tableId != null) {
+                Log.i(TAG, "TABLE ID " + tableId);
             }
-
-            NdefMessage[] msgs = new NdefMessage[rawMsgs.length];
-            for (int i = 0; i < rawMsgs.length; i++) {
-                msgs[i] = (NdefMessage) rawMsgs[i];
-                for (NdefRecord rec : msgs[i].getRecords()) {
-                    Log.i(TAG, "PAYLOAD " + new String(rec.getPayload()));
-                }
-            }
-        }
-    }
-
-    public static boolean writeTag(NdefMessage message, Tag tag) {
-        int size = message.toByteArray().length;
-        try {
-            Ndef ndef = Ndef.get(tag);
-            if (ndef != null) {
-                ndef.connect();
-                if (!ndef.isWritable()) {
-                    return false;
-                }
-                if (ndef.getMaxSize() < size) {
-                    return false;
-                }
-                ndef.writeNdefMessage(message);
-                return true;
-            } else {
-                NdefFormatable format = NdefFormatable.get(tag);
-                if (format != null) {
-                    try {
-                        format.connect();
-                        format.format(message);
-                        return true;
-                    } catch (IOException e) {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            }
-        } catch (Exception e) {
-            return false;
         }
     }
 }
