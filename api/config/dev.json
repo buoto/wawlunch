@@ -1,0 +1,5 @@
+{
+  "dbConnectionString":
+    "host=/var/run/postgresql/ dbname=wawlunch sslmode=disable",
+  "addr": ":8080"
+}

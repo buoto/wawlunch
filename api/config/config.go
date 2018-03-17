@@ -1,0 +1,28 @@
+package config
+
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+)
+
+type Config struct {
+	Addr               string `json:"addr"`
+	DBConnectionString string `json:"dbConnectionString"`
+}
+
+func Load(path string) (Config, error) {
+	var conf Config
+	file, err := os.Open(path)
+	if err != nil {
+		return conf, fmt.Errorf("error openning config file: %v", err)
+	}
+	defer file.Close()
+
+	err = json.NewDecoder(file).Decode(&conf)
+	if err != nil {
+		return conf, fmt.Errorf("error unmarshalling: %v", err)
+	}
+
+	return conf, nil
+}
