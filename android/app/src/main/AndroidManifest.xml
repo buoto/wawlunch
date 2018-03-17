@@ -6,9 +6,13 @@
         android:glEsVersion="0x00020000"
         android:required="true" />
     <uses-feature android:name="android.hardware.location.gps" />
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.NFC" />
 
     <application
         android:allowBackup="true"
@@ -24,12 +28,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".NfcActivity">
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="application/com.kantoniak.wawlunch" />
+            </intent-filter>
+            <meta-data android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA3altuoFSUyYXrtLLlslJM5EHBFF3RHvQ" />
 
-        <activity android:name=".PlaceActivity"></activity>
+        <activity android:name=".PlaceActivity" />
     </application>
 
 </manifest>
