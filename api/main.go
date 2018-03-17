@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 
@@ -9,14 +8,12 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
 	"github.com/buoto/wawlunch/api/config"
+	"github.com/buoto/wawlunch/api/place"
 	"github.com/buoto/wawlunch/api/transport"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"alive": true,
-	})
-
+func handlerError(w http.ResponseWriter, r *http.Request) {
+	http.Error(w, transport.ErrorJSON("I'm a teapot"), http.StatusTeapot)
 }
 
 func main() {
@@ -34,7 +31,13 @@ func main() {
 
 	middlewares := transport.ChainMiddlewares(transport.JSONMiddleware)
 
-	http.HandleFunc("/", middlewares(handler))
+	http.HandleFunc("/places/", middlewares(transport.Methods(map[string]http.HandlerFunc{
+		http.MethodGet:  place.List(db),
+		http.MethodPost: place.Create(db),
+	})))
+	http.HandleFunc("/error/", middlewares(transport.Methods(map[string]http.HandlerFunc{
+		http.MethodGet: handlerError,
+	})))
 
 	log.Println("Running server on:", conf.Addr)
 	log.Fatal(http.ListenAndServe(conf.Addr, nil)) // TODO: Add timeout on prod

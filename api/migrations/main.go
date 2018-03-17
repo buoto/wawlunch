@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/buoto/wawlunch/api/config"
-	"github.com/buoto/wawlunch/api/model"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
@@ -27,7 +26,7 @@ func main() {
 	if len(os.Args) == 1 {
 		log.Println("Running auto migration")
 
-		db.AutoMigrate(&model.Place{})
+		db.AutoMigrate(&place.Place{})
 	} else {
 		migrationKey := os.Args[1]
 
