@@ -2,7 +2,6 @@ package kantoniak.com.wawlunch;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -20,11 +19,16 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.loopj.android.http.TextHttpResponseHandler;
 
+import java.util.Arrays;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
+import kantoniak.com.wawlunch.data.Api;
 import kantoniak.com.wawlunch.data.Place;
-import kantoniak.com.wawlunch.data.PlaceProvider;
 
 public class SearchActivity extends Activity implements OnMapReadyCallback {
 
@@ -57,7 +61,6 @@ public class SearchActivity extends Activity implements OnMapReadyCallback {
     private static final String TAG = SearchActivity.class.getSimpleName();
     private final static int DEFAULT_MAP_ZOOM = 13;
 
-    private PlaceProvider mPlaceProvider = PlaceProvider.getInstance();
     private SearchResultAdapter mSearchResultAdapter = new SearchResultAdapter(resultClickListener);
 
     private RecyclerView mSearchResultsRecyclerView;
@@ -85,15 +88,24 @@ public class SearchActivity extends Activity implements OnMapReadyCallback {
     }
 
     private void fetchResults() {
-        List<Place> places = mPlaceProvider.getPlaces();
+        Api.getInstance().get(Api.Method.PLACES, new TextHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String response) {
+                Gson gson = new GsonBuilder().create();
+                List<Place> places = Arrays.asList(gson.fromJson(response, Place[].class));
+                Log.i(TAG, "SIZE: " + places.size());
+                runOnUiThread(() -> {
+                    mSearchResultAdapter.updatePlaces(places);
+                    places.stream().forEach(p -> googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(p.getLatitude(), p.getLongitude()))
+                        .title(p.getName())));
+                });
+            }
 
-        // TODO(kantoniak): Please be async
-        mSearchResultAdapter.updatePlaces(places);
-
-        places.stream().forEach(p -> {
-            googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(p.getLatitude(), p.getLongitude()))
-                    .title(p.getName()));
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.e(TAG, "FAIL HTTP " + statusCode, throwable);
+            }
         });
     }
 
