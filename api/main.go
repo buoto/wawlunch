@@ -20,7 +20,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	conf, err := config.Load("config/dev.json")
+
+	conf, err := config.Load(config.ConfEnvName, "config/dev.json")
 	if err != nil {
 		log.Fatalf("Could not load config: %v", err)
 	}

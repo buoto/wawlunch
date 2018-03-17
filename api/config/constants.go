@@ -1,3 +1,6 @@
 package config
 
-const DBDriver = "postgres"
+const (
+	DBDriver    = "postgres"
+	ConfEnvName = "WAWLUNCH_CONF"
+)

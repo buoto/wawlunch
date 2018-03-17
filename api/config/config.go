@@ -11,8 +11,12 @@ type Config struct {
 	DBConnectionString string `json:"dbConnectionString"`
 }
 
-func Load(path string) (Config, error) {
+func Load(pathEnv, path string) (Config, error) {
+	if confPath, ok := os.LookupEnv(pathEnv); ok {
+		path = confPath
+	}
 	var conf Config
+
 	file, err := os.Open(path)
 	if err != nil {
 		return conf, fmt.Errorf("error openning config file: %v", err)
