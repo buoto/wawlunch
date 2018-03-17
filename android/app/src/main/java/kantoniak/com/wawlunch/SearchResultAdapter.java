@@ -1,5 +1,6 @@
 package kantoniak.com.wawlunch;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,8 +18,10 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     private static final String TAG = SearchResultAdapter.class.getSimpleName();
 
     private final List<Place> places = new LinkedList<>();
+    private final View.OnClickListener clickListener;
 
-    public SearchResultAdapter() {
+    public SearchResultAdapter(View.OnClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -43,7 +46,14 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Place place = places.get(position);
+        holder.mItemView.setTag(R.id.list_item_place, place);
+        holder.mItemView.setOnClickListener(clickListener);
         holder.mNameText.setText(place.getName());
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull ViewHolder holder) {
+        holder.mItemView.setOnClickListener(null);
     }
 
     @Override

@@ -2,6 +2,7 @@ package kantoniak.com.wawlunch;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -11,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,18 +27,6 @@ import kantoniak.com.wawlunch.data.Place;
 import kantoniak.com.wawlunch.data.PlaceProvider;
 
 public class SearchActivity extends Activity implements OnMapReadyCallback {
-
-    private static final String TAG = SearchActivity.class.getSimpleName();
-    private final static int DEFAULT_MAP_ZOOM = 13;
-
-    private PlaceProvider mPlaceProvider = PlaceProvider.getInstance();
-    private SearchResultAdapter mSearchResultAdapter = new SearchResultAdapter();;
-
-    private RecyclerView mSearchResultsRecyclerView;
-    private MapFragment mMapFragment;
-    private GoogleMap googleMap;
-
-    private final Activity activity = this;
 
     private final LocationListener locationListener = new LocationListener() {
 
@@ -55,6 +45,26 @@ public class SearchActivity extends Activity implements OnMapReadyCallback {
 
         public void onProviderDisabled(String provider) {}
     };
+
+    private final View.OnClickListener resultClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Place place = (Place) view.getTag(R.id.list_item_place);
+            startActivity(new ShowPlaceIntent(activity, place));
+        }
+    };
+
+    private static final String TAG = SearchActivity.class.getSimpleName();
+    private final static int DEFAULT_MAP_ZOOM = 13;
+
+    private PlaceProvider mPlaceProvider = PlaceProvider.getInstance();
+    private SearchResultAdapter mSearchResultAdapter = new SearchResultAdapter(resultClickListener);
+
+    private RecyclerView mSearchResultsRecyclerView;
+    private MapFragment mMapFragment;
+    private GoogleMap googleMap;
+
+    private final Activity activity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +102,11 @@ public class SearchActivity extends Activity implements OnMapReadyCallback {
         this.googleMap = googleMap;
 
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        Location lastKnownLocation = locationManager.getLastKnownLocation(locationManager);
-        LatLng pos = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, DEFAULT_MAP_ZOOM));
+        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if (lastKnownLocation != null) {
+            LatLng pos = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, DEFAULT_MAP_ZOOM));
+        }
 
         fetchResults();
         startCenteringMap();
