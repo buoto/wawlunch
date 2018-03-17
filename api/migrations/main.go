@@ -5,11 +5,19 @@ import (
 	"os"
 
 	"github.com/buoto/wawlunch/api/config"
+	"github.com/buoto/wawlunch/api/place"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-var migrations = map[string]func(*gorm.DB){}
+var migrations = map[string]func(*gorm.DB){
+	"remove_timestamps": func(db *gorm.DB) {
+		m := db.Model(&place.Place{})
+		m.DropColumn("created_at")
+		m.DropColumn("deleted_at")
+		m.DropColumn("updated_at")
+	},
+}
 
 func main() {
 	conf, err := config.Load(config.ConfEnvName, "config/dev.json")
@@ -26,7 +34,12 @@ func main() {
 	if len(os.Args) == 1 {
 		log.Println("Running auto migration")
 
-		db.AutoMigrate(&place.Place{})
+		db = db.AutoMigrate(&place.Place{}, &place.Menu{})
+		if errs := db.GetErrors(); len(errs) > 0 {
+			for _, err := range errs {
+				log.Println(err)
+			}
+		}
 	} else {
 		migrationKey := os.Args[1]
 

@@ -12,7 +12,7 @@ func List(db *gorm.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var places []Place
 
-		db.Model(&Place{}).Find(&places)
+		db.Model(&Place{}).Preload("Menus").Find(&places)
 
 		json.NewEncoder(w).Encode(places)
 	}
@@ -24,11 +24,8 @@ func Create(db *gorm.DB) http.HandlerFunc {
 
 		err := json.NewDecoder(r.Body).Decode(&place)
 		if err != nil {
-			http.Error(
-				w,
-				transport.ErrorJSON("Error unmarshalling Place: %v", err),
-				http.StatusBadRequest,
-			)
+			http.Error(w, transport.ErrorJSON("Error unmarshalling Place: %v", err), http.StatusBadRequest)
+			return
 		}
 
 		db.Create(&place)
