@@ -17,6 +17,18 @@ var migrations = map[string]func(*gorm.DB){
 		m.DropColumn("deleted_at")
 		m.DropColumn("updated_at")
 	},
+	"fill_places": func(db *gorm.DB) {
+		db.Create(&place.Place{
+			Name:      "Aioli",
+			Longitude: 21.011496,
+			Latitude:  52.2360099,
+		})
+		db.Create(&place.Place{
+			Name:      "Orzo",
+			Longitude: 21.0152604,
+			Latitude:  52.2223586,
+		})
+	},
 }
 
 func main() {
@@ -31,16 +43,16 @@ func main() {
 	}
 	defer db.Close()
 
-	if len(os.Args) == 1 {
-		log.Println("Running auto migration")
+	log.Println("Running auto migration")
 
-		db = db.AutoMigrate(&place.Place{}, &place.Menu{})
-		if errs := db.GetErrors(); len(errs) > 0 {
-			for _, err := range errs {
-				log.Println(err)
-			}
+	db = db.AutoMigrate(&place.Place{}, &place.Menu{})
+	if errs := db.GetErrors(); len(errs) > 0 {
+		for _, err := range errs {
+			log.Println(err)
 		}
-	} else {
+	}
+
+	if len(os.Args) == 2 {
 		migrationKey := os.Args[1]
 
 		if migration, ok := migrations[migrationKey]; ok {

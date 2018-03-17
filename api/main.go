@@ -35,6 +35,9 @@ func main() {
 		http.MethodGet:  place.List(db),
 		http.MethodPost: place.Create(db),
 	})))
+	http.HandleFunc("/menus/", middlewares(transport.Methods(map[string]http.HandlerFunc{
+		http.MethodGet: place.ListMenus(db),
+	})))
 	http.HandleFunc("/error/", middlewares(transport.Methods(map[string]http.HandlerFunc{
 		http.MethodGet: handlerError,
 	})))
