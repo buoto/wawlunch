@@ -1,17 +1,21 @@
 package kantoniak.com.wawlunch;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -23,6 +27,7 @@ import kantoniak.com.wawlunch.data.PlaceProvider;
 public class SearchActivity extends Activity implements OnMapReadyCallback {
 
     private static final String TAG = SearchActivity.class.getSimpleName();
+    private final static int DEFAULT_MAP_ZOOM = 13;
 
     private PlaceProvider mPlaceProvider = PlaceProvider.getInstance();
     private SearchResultAdapter mSearchResultAdapter = new SearchResultAdapter();;
@@ -31,12 +36,33 @@ public class SearchActivity extends Activity implements OnMapReadyCallback {
     private MapFragment mMapFragment;
     private GoogleMap googleMap;
 
+    private final Activity activity = this;
+
+    private final LocationListener locationListener = new LocationListener() {
+
+        public void onLocationChanged(Location location) {
+            if (location.getAccuracy() < 30) {
+                LocationUtils.stopUpdates(activity, locationListener);
+            }
+            LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, DEFAULT_MAP_ZOOM));
+            Log.i(TAG, "Loc update: " + location.getLatitude() + " " + location.getLongitude() + " " + location.getAccuracy());
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+        public void onProviderEnabled(String provider) {}
+
+        public void onProviderDisabled(String provider) {}
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
         setupSearchResults();
+
     }
 
     private void setupSearchResults() {
@@ -64,7 +90,32 @@ public class SearchActivity extends Activity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(52.2223586, 21.0152604), 13));
+
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        Location lastKnownLocation = locationManager.getLastKnownLocation(locationManager);
+        LatLng pos = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, DEFAULT_MAP_ZOOM));
+
         fetchResults();
+        startCenteringMap();
+    }
+
+    private void startCenteringMap() {
+        if (LocationUtils.hasLocationPermission(this)) {
+            LocationUtils.startFetchingLocation(this, locationListener);
+        } else {
+            LocationUtils.askForLocationPermission(this);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case LocationUtils.PERMISSION_REQ_LOCATION: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startCenteringMap();
+                }
+            }
+        }
     }
 }
