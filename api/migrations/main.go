@@ -20,7 +20,9 @@ var migrations = map[string]func(*gorm.DB){
 	},
 	"fill_places": func(db *gorm.DB) {
 		t12, _ := time.Parse(place.ClockFormat, "12:00")
+		t123, _ := time.Parse(place.ClockFormat, "12:30")
 		t16, _ := time.Parse(place.ClockFormat, "16:00")
+		t17, _ := time.Parse(place.ClockFormat, "17:00")
 
 		db.Create(&place.Place{
 			Name:        "Aioli",
@@ -32,6 +34,7 @@ var migrations = map[string]func(*gorm.DB){
 			CommonPrice: 2200,
 			OpenFrom:    &t12,
 			OpenTo:      &t16,
+			Tables:      []place.Table{{}, {}, {}, {}, {}},
 		})
 		db.Create(&place.Place{
 			Name:        "Orzo",
@@ -40,7 +43,79 @@ var migrations = map[string]func(*gorm.DB){
 			Street:      "plac Konstytucji 5",
 			Picture:     "http://buoto.me:8080/images/orzo_logo.png",
 			InsidePhoto: "http://buoto.me:8080/images/orzo.jpg",
-			CommonPrice: 2200,
+			CommonPrice: 1990,
+			OpenFrom:    &t12,
+			OpenTo:      &t17,
+			Premium:     true,
+		})
+		db.Create(&place.Place{
+			Name:        "Jadłoteka",
+			Longitude:   21.0330489,
+			Latitude:    52.2559057,
+			Street:      "Targowa 81",
+			Picture:     "http://buoto.me:8080/images/jadloteka_logo.png",
+			InsidePhoto: "http://buoto.me:8080/images/jadloteka.jpg",
+			CommonPrice: 1800,
+			OpenFrom:    &t12,
+			OpenTo:      &t16,
+		})
+
+		db.Create(&place.Place{
+			Name:        "Centrum Zarządzania Światem",
+			Longitude:   21.0353556,
+			Latitude:    52.2511211,
+			Street:      "Stefana Okrzei 26",
+			Picture:     "http://buoto.me:8080/images/centrum_zarzadzania_swiatem_logo.jpg",
+			InsidePhoto: "http://buoto.me:8080/images/centrum_zarzadzania_swiatem.jpg",
+			CommonPrice: 2100,
+			OpenFrom:    &t123,
+			OpenTo:      &t16,
+		})
+
+		db.Create(&place.Place{
+			Name:        "Pausa Włoska",
+			Longitude:   21.0388666,
+			Latitude:    52.2530767,
+			Street:      "Ząbkowska 5",
+			Picture:     "http://buoto.me:8080/images/pausa_wloska_logo.png",
+			InsidePhoto: "http://buoto.me:8080/images/pausa_wloska.jpg",
+			CommonPrice: 1900,
+			OpenFrom:    &t12,
+			OpenTo:      &t16,
+		})
+
+		db.Create(&place.Place{
+			Name:        "Restauracja Chińska MAO",
+			Longitude:   21.0155468,
+			Latitude:    52.2243381,
+			Street:      "Marszałkowska 62",
+			Picture:     "http://buoto.me:8080/images/mao_logo.jpg",
+			InsidePhoto: "http://buoto.me:8080/images/mao.jpg",
+			CommonPrice: 1990,
+			OpenFrom:    &t12,
+			OpenTo:      &t16,
+		})
+
+		db.Create(&place.Place{
+			Name:        "Restauracja Si",
+			Longitude:   21.003438,
+			Latitude:    52.241402,
+			Street:      "Marszałkowska 115",
+			Picture:     "http://buoto.me:8080/images/restauracja_si_logo.jpg",
+			InsidePhoto: "http://buoto.me:8080/images/restauracja_si.jpg",
+			CommonPrice: 1990,
+			OpenFrom:    &t12,
+			OpenTo:      &t16,
+		})
+
+		db.Create(&place.Place{
+			Name:        "Stara Kamienica",
+			Longitude:   21.0152765,
+			Latitude:    52.2314908,
+			Street:      "Widok 8",
+			Picture:     "http://buoto.me:8080/images/stara_kamienica_logo.png",
+			InsidePhoto: "http://buoto.me:8080/images/stara_kamienica.jpg",
+			CommonPrice: 1950,
 			OpenFrom:    &t12,
 			OpenTo:      &t16,
 		})
@@ -53,19 +128,12 @@ var migrations = map[string]func(*gorm.DB){
 		}
 
 		now := time.Now()
-		tomorrow := now.Add(time.Hour * 24)
 
 		db.Create(&place.Menu{
 			PlaceID: places[0].ID,
 			Date:    &now,
 			Price:   2200,
 		})
-		db.Create(&place.Menu{
-			PlaceID: places[0].ID,
-			Date:    &tomorrow,
-			Price:   2300,
-		})
-
 		db.Create(&place.Menu{
 			PlaceID: places[1].ID,
 			Date:    &now,
@@ -134,7 +202,13 @@ func main() {
 
 	log.Println("Running auto migration")
 
-	db = db.AutoMigrate(&place.Place{}, &place.Menu{}, &place.Dish{})
+	db = db.AutoMigrate(
+		&place.Place{},
+		&place.Menu{},
+		&place.Dish{},
+		&place.Table{},
+		&place.Order{},
+	)
 	if errs := db.GetErrors(); len(errs) > 0 {
 		for _, err := range errs {
 			log.Println(err)

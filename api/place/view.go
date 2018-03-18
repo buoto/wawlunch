@@ -36,6 +36,7 @@ func Create(db *gorm.DB) http.HandlerFunc {
 			return
 		}
 
+		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(place)
 	}
 }
@@ -74,17 +75,78 @@ func CreateMenus(db *gorm.DB) http.HandlerFunc {
 			return
 		}
 
+		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(menu)
+	}
+}
+
+func PlaceOrder(db *gorm.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// TODO: check user
+		payload := struct {
+			PlaceID    *uint   `json:"placeId"`
+			FacebookID *string `json:"facebookId"`
+		}{}
+
+		err := json.NewDecoder(r.Body).Decode(&payload)
+		if err != nil {
+			http.Error(w, transport.ErrorJSON("Error unmarshalling data: %v", err), http.StatusBadRequest)
+			return
+		}
+		if payload.PlaceID == nil {
+			http.Error(w, transport.ErrorJSON("Missing placeId"), http.StatusBadRequest)
+			return
+		}
+		if payload.FacebookID == nil {
+			http.Error(w, transport.ErrorJSON("Missing facebookId"), http.StatusBadRequest)
+			return
+		}
+		order := Order{PlaceID: *payload.PlaceID, FacebookID: *payload.FacebookID}
+
+		q := db.Create(&order).Preload("Place").Find(&order)
+
+		if err = transport.DBErrors(w, q); err != nil {
+			http.Error(w, transport.ErrorJSON(err.Error()), http.StatusBadRequest)
+			return
+		}
+		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(order)
+
 	}
 }
 
 func TableCheckIn(db *gorm.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// TODO: check user
-		// TODO: check tag
+		payload := struct {
+			TableID    *uint   `json:"tableId"`
+			FacebookID *string `json:"facebookId"`
+		}{}
+		err := json.NewDecoder(r.Body).Decode(&payload)
+		if err != nil {
+			http.Error(w, transport.ErrorJSON("Error unmarshalling data: %v", err), http.StatusBadRequest)
+			return
+		}
+		if payload.TableID == nil {
+			http.Error(w, transport.ErrorJSON("Missing tableId"), http.StatusBadRequest)
+			return
+		}
+		if payload.FacebookID == nil {
+			http.Error(w, transport.ErrorJSON("Missing facebookId"), http.StatusBadRequest)
+			return
+		}
 
-		// TODO: checkin
+		order := Order{FacebookID: *payload.FacebookID}
+		q := db.Find(&order)
+		order.TableID = *payload.TableID
+		q.Save(&order)
 
-		// TODO: return status
+		if err = transport.DBErrors(w, q); err != nil {
+			http.Error(w, transport.ErrorJSON(err.Error()), http.StatusBadRequest)
+			return
+		}
+
+		w.WriteHeader(http.StatusAccepted)
+		json.NewEncoder(w).Encode(order)
 	}
 }

@@ -19,7 +19,10 @@ type Place struct {
 
 	CommonPrice uint `json:"commonPrice"`
 
-	Menus []Menu `json:"-"`
+	Menus  []Menu  `json:"-"`
+	Tables []Table `json:"tables"`
+
+	Premium bool `json:"premium" gorm:"default:false"`
 }
 
 func (p *Place) UnmarshalJSON(data []byte) error {
@@ -46,6 +49,34 @@ func (p *Place) MarshalJSON() ([]byte, error) {
 	}{(*placeJSON)(p), (*ClockTime)(p.OpenFrom), (*ClockTime)(p.OpenTo)}
 
 	return json.Marshal(d)
+}
+
+type Table struct {
+	ID      uint `json:"id" gorm:"primary_key"`
+	PlaceID uint `json:"placeId" gorm:"not null"`
+}
+
+type User struct {
+	ID         uint   `json:"id" gorm:"primary_key"`
+	FacebookID uint   `json:"facebookID" gorm:"index"`
+	Name       string `json:"name"`
+	Order      Order  `json:"order"`
+}
+
+type Order struct {
+	ID uint `json:"id" gorm:"primary_key"`
+
+	// TODO: Use User model instead of FacebookID
+	//UserID uint `json:"userId"`
+	FacebookID string `json:"facebookID" gorm:"index;not null;unique"`
+
+	Table   *Table `json:"-"`
+	TableID uint   `json:"tableId"`
+
+	Place   Place `json:"-"`
+	PlaceID uint  `json:"placeId" gorm:"not null"`
+
+	Dishes []Dish `json:"dishes"`
 }
 
 type Menu struct {

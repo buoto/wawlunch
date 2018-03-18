@@ -41,7 +41,12 @@ func main() {
 		http.MethodOptions: transport.Preflight("POST, GET, OPTIONS"),
 	})))
 	http.HandleFunc("/checkin/", middlewares(transport.Methods(map[string]http.HandlerFunc{
-		http.MethodGet: place.TableCheckIn(db),
+		http.MethodPost:    place.TableCheckIn(db),
+		http.MethodOptions: transport.Preflight("POST, GET, OPTIONS"),
+	})))
+	http.HandleFunc("/orders/", middlewares(transport.Methods(map[string]http.HandlerFunc{
+		http.MethodPost:    place.PlaceOrder(db),
+		http.MethodOptions: transport.Preflight("POST, GET, OPTIONS"),
 	})))
 	http.HandleFunc("/error/", middlewares(transport.Methods(map[string]http.HandlerFunc{
 		http.MethodGet: handlerError,
