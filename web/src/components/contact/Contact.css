@@ -18,6 +18,22 @@
     border: none;
     border-radius: 3px;
     padding: 5px 10px;
+    min-width: 197px;
+}
+
+.contact__form--row > *:focus,
+.contact__form--textarea:focus {
+    outline: none;
+}
+
+.contact__form--textarea::placeholder {
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.contact__link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 .contact__form--row:last-child {
@@ -33,10 +49,29 @@
     align-self: center;
     border-radius: 3px;
     margin: 10px;
+    cursor: pointer;
+}
+
+.contact__form--button:focus {
+    outline: none;
 }
 
 .contact__form--textarea {
     resize: none;
     flex-grow: 1;
     width: 400px;
+}
+
+@media (max-width: 425px) {
+    .contact__form--columns {
+        flex-direction: column;
+    }
+
+    .contact__form--textarea {
+        width: 100%;
+    }
+
+    .contact__form--row > * {
+        width: 100%;
+    }
 }

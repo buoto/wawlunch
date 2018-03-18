@@ -5,6 +5,7 @@ import { SingleDatePicker } from 'react-dates';
 import moment from 'moment';
 import 'moment/locale/pl';
 import Modal from 'react-modal';
+import { Link } from 'react-router-dom';
 
 import Section from "./section/Section";
 import Footer from "../footer/Footer";
@@ -95,8 +96,10 @@ class Form extends Component {
                     </div>
                 </Modal>
                 <div className="form__header">
-                    <img src={logoWhite} className="form__logo" />
-                    <h1 className="form__name">Zlunchowani</h1>
+                    <Link to="/" className="form__header">
+                        <img src={logoWhite} className="form__logo" />
+                        <h1 className="form__name">Zlunchowani</h1>
+                    </Link>
                 </div>
                 <div className="form__body">
                     <h2 className="form__title">Uzupełnij menu</h2>

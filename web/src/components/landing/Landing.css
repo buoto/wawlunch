@@ -39,9 +39,21 @@
     align-self: center;
 }
 
-
 .landing__view--rows {
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+@media (max-width: 1024px) {
+    .landing__info--columns {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 425px) {
+    .landing__view {
+        flex-direction: column-reverse;
+        height: auto;
+    }
 }

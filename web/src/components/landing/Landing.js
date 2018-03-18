@@ -10,6 +10,7 @@ import arrow from "../../assets/icons/arrow.svg"
 
 import "./Landing.css";
 import Logo from "../logo/Logo";
+import Showcase from "../showcase/Showcase";
 
 class Landing extends PureComponent {
     render() {
@@ -26,6 +27,7 @@ class Landing extends PureComponent {
                     <img src={arrow} className="landing__arrow" />
                     <div className="landing__info--columns">
                         <About />
+                        <Showcase />
                         <Contact />
                     </div>
                     <Footer />

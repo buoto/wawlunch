@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Link } from 'react-router-dom'
 
 import "./Contact.css";
 
@@ -7,8 +8,9 @@ class Contact extends PureComponent {
         return (
             <div className="contact">
                 <h2>Współpraca</h2>
+                <p>Masz już konto? <Link to='/form' className="contact__link">Dodaj nowy lunch</Link>.</p>
                 <p>Prowadzisz restaurację? Bądźmy w kontakcie.</p>
-                <form className="contact__form">
+                <div className="contact__form">
                     <div className="contact__form--columns">
                         <div className="contact__form--row">
                             <input placeholder="Nazwa restauracji" />
@@ -19,7 +21,7 @@ class Contact extends PureComponent {
                         <textarea placeholder="Wiadomość" className="contact__form--textarea" />
                     </div>
                     <button className="contact__form--button">Wyślij</button>
-                </form>
+                </div>
             </div>
         );
     }
