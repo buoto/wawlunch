@@ -48,6 +48,7 @@
 
 .form__title {
     color: rgba(0, 0, 0, 0.7);
+    margin-top: 0;
 }
 
 .modal {
@@ -99,4 +100,11 @@
 .DateInput_input {
     border-radius: 3px;
     padding: 0 10px;
+}
+
+@media (max-width: 425px) {
+    .form__body {
+        width: auto;
+        margin: 5px;
+    }
 }
