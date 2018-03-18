@@ -39,7 +39,7 @@ var migrations = map[string]func(*gorm.DB){
 			Latitude:    52.2223586,
 			Street:      "plac Konstytucji 5",
 			Picture:     "http://buoto.me:8080/images/orzo_logo.png",
-			InsidePhoto: "http://buoto.me:8080/images/orzo.png",
+			InsidePhoto: "http://buoto.me:8080/images/orzo.jpg",
 			CommonPrice: 2200,
 			OpenFrom:    &t12,
 			OpenTo:      &t16,
