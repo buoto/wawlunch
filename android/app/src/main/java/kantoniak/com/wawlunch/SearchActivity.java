@@ -75,8 +75,8 @@ public class SearchActivity extends Activity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        //ColorDrawable drawable = new ColorDrawable(getResources().getColor(R.color.colorPrimary));
-        //getActionBar().setBackgroundDrawable(drawable);
+        ColorDrawable drawable = new ColorDrawable(getResources().getColor(R.color.colorPrimary));
+        getActionBar().setBackgroundDrawable(drawable);
         setupSearchResults();
     }
 

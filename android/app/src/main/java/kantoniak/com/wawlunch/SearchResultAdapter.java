@@ -2,12 +2,13 @@ package kantoniak.com.wawlunch;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -55,6 +56,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         holder.mItemView.setOnClickListener(clickListener);
         holder.mNameText.setText(place.getName());
         holder.mStreetText.setText(place.getStreet());
+        Picasso.get().load(place.getPicture()).into(holder.mThumbView);
     }
 
     @Override
