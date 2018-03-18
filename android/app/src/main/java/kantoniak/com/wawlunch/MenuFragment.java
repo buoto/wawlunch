@@ -2,11 +2,18 @@ package kantoniak.com.wawlunch;
 
 import android.content.Context;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
+import kantoniak.com.wawlunch.data.Dish;
+import kantoniak.com.wawlunch.data.Menu;
 
 
 /**
@@ -18,39 +25,88 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class MenuFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
+    private final Menu menu;
 
     private OnFragmentInteractionListener mListener;
 
-    public MenuFragment() {
+    public MenuFragment(Menu menu) {
+        this.menu = menu;
     }
-    
-    public static MenuFragment newInstance(String param1, String param2) {
-        MenuFragment fragment = new MenuFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
+    public static MenuFragment newInstance(Menu menu) {
+        MenuFragment fragment = new MenuFragment(menu);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_menu, container, false);
+        View result = inflater.inflate(R.layout.fragment_menu, container, false);
+        makeUI(result);
+        return result;
+    }
+
+    private void makeUI(View view) {
+        // Przepraszam za napisanie tego kodu...
+        // Sorry for writing this code...
+
+        LinearLayoutCompat first = view.findViewById(R.id.menu_first);
+        LinearLayoutCompat main = view.findViewById(R.id.menu_main);
+        LinearLayoutCompat dessert = view.findViewById(R.id.menu_dessert);
+        LinearLayoutCompat drink = view.findViewById(R.id.menu_drink);
+
+        RadioGroup firstRadios = (RadioGroup) first.getChildAt(1);
+        RadioGroup mainRadios = (RadioGroup) main.getChildAt(1);
+        RadioGroup dessertRadios = (RadioGroup) dessert.getChildAt(1);
+        RadioGroup drinkRadios = (RadioGroup) drink.getChildAt(1);
+
+        int firstCount = 0;
+        int mainCount = 0;
+        int dessertCount = 0;
+        int drinkCount = 0;
+
+        for (int i = 0; i < 3; i++) {
+            firstRadios.getChildAt(i).setVisibility(View.GONE);
+            mainRadios.getChildAt(i).setVisibility(View.GONE);
+            dessertRadios.getChildAt(i).setVisibility(View.GONE);
+            drinkRadios.getChildAt(i).setVisibility(View.GONE);
+        }
+
+        for (Dish d : menu.getDishes()) {
+            RadioButton option = null;
+
+            switch (d.getType()) {
+                case Dish.Type.SOUP:
+                    option = (RadioButton) firstRadios.getChildAt(firstCount);
+                    firstCount++;
+                    break;
+                case Dish.Type.MAIN:
+                    option = (RadioButton) mainRadios.getChildAt(mainCount);
+                    mainCount++;
+                    break;
+                case Dish.Type.DESS:
+                    option = (RadioButton) dessertRadios.getChildAt(dessertCount);
+                    dessertCount++;
+                    break;
+                case Dish.Type.DRIN:
+                    option = (RadioButton) drinkRadios.getChildAt(drinkCount);
+                    drinkCount++;
+                    break;
+            }
+
+            option.setText(d.getName());
+            option.setVisibility(View.VISIBLE);
+        }
+
+        first.setVisibility(firstCount > 0 ? View.VISIBLE : View.GONE);
+        main.setVisibility(mainCount > 0 ? View.VISIBLE : View.GONE);
+        dessert.setVisibility(dessertCount > 0 ? View.VISIBLE : View.GONE);
+        drink.setVisibility(drinkCount > 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override

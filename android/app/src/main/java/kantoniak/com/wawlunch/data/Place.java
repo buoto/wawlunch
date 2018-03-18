@@ -16,11 +16,19 @@ public class Place {
     @SerializedName("longitude")
     private final double longitude;
 
-    public Place(int id, String name, double latitude, double longitude) {
+    @SerializedName("street")
+    private final String street;
+
+    @SerializedName("picture")
+    private final String picture;
+
+    public Place(int id, String name, double latitude, double longitude, String street, String picture) {
         this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.street = street;
+        this.picture = picture;
     }
 
     public int getId() {
@@ -37,6 +45,14 @@ public class Place {
 
     public double getLongitude() {
         return longitude;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public String getPicture() {
+        return picture;
     }
 
     @Override

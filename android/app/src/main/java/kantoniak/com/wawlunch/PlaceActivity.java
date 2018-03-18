@@ -31,6 +31,8 @@ public class PlaceActivity extends AppCompatActivity implements MenuFragment.OnF
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
 
+    private final AppCompatActivity thisActivity = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,9 +58,6 @@ public class PlaceActivity extends AppCompatActivity implements MenuFragment.OnF
         int menuSliderMenuMarginPx = (int) getResources().getDimension(R.dimen.menu_slider_menu_margin);
         mViewPager.setPadding(menuSliderHorPaddingPx, 0, menuSliderHorPaddingPx, menuSliderVertPaddingPx);
         mViewPager.setPageMargin(menuSliderMenuMarginPx);
-
-        mPagerAdapter = new MenuAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mPagerAdapter);
     }
 
     private void fetchMenus(int placeId) {
@@ -70,6 +69,8 @@ public class PlaceActivity extends AppCompatActivity implements MenuFragment.OnF
                 Log.i(TAG, "SIZE: " + menus.size());
                 runOnUiThread(() -> {
                     menus.stream().forEach(m -> Log.i(TAG, "DISHES " + m.getDishes().size()));
+                    mPagerAdapter = new MenuAdapter(thisActivity.getSupportFragmentManager(), menus);
+                    mViewPager.setAdapter(mPagerAdapter);
                 });
             }
 

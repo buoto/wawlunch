@@ -4,7 +4,7 @@
     <dimen name="regular_padding">8dp</dimen>
     <dimen name="medium_padding">4dp</dimen>
 
-    <dimen name="menu_slider_hor_padding">48dp</dimen>
+    <dimen name="menu_slider_hor_padding">36dp</dimen>
     <dimen name="menu_slider_vert_padding">16dp</dimen>
     <dimen name="menu_slider_menu_margin">16dp</dimen>
 </resources>

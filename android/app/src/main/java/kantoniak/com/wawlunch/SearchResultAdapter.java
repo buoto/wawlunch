@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.LinkedList;
@@ -28,11 +29,15 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
         public View mItemView;
         public TextView mNameText;
+        public TextView mStreetText;
+        public ImageView mThumbView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mItemView = itemView;
             mNameText = itemView.findViewById(R.id.search_result_name);
+            mStreetText = itemView.findViewById(R.id.search_result_street);
+            mThumbView = itemView.findViewById(R.id.search_result_thumb);
         }
     }
 
@@ -49,6 +54,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         holder.mItemView.setTag(R.id.list_item_place, place);
         holder.mItemView.setOnClickListener(clickListener);
         holder.mNameText.setText(place.getName());
+        holder.mStreetText.setText(place.getStreet());
     }
 
     @Override
