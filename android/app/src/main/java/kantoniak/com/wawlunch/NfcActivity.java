@@ -12,13 +12,20 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.Profile;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
+import cz.msebera.android.httpclient.Header;
+import kantoniak.com.wawlunch.data.Api;
 import kantoniak.com.wawlunch.nfc.NfcUtil;
 
 public class NfcActivity extends Activity {
@@ -29,6 +36,7 @@ public class NfcActivity extends Activity {
     private View mNotLoggedInView;
     private View mProgressView;
     private View mDoneView;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +46,28 @@ public class NfcActivity extends Activity {
         mNotLoggedInView = findViewById(R.id.nfc_not_logged_in);
         mProgressView = findViewById(R.id.nfc_getting_order);
         mDoneView = findViewById(R.id.nfc_done);
+        mProgressBar = findViewById(R.id.nfc_progressbar);
 
         writeTag(getIntent());
     }
 
     private void showScreen(int i) {
-        mNotLoggedInView.setVisibility(View.GONE);
-        mProgressView.setVisibility(View.GONE);
-        mDoneView.setVisibility(View.GONE);
+        mNotLoggedInView.setVisibility(View.INVISIBLE);
+        mProgressView.setVisibility(View.INVISIBLE);
+        mDoneView.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.INVISIBLE);
 
-        switch (i) {
-            case 0: mNotLoggedInView.setVisibility(View.VISIBLE); return;
-            case 1: mProgressView.setVisibility(View.VISIBLE); return;
-            case 2: mDoneView.setVisibility(View.VISIBLE); return;
+        if (i == 0) {
+            mNotLoggedInView.setVisibility(View.VISIBLE);
+        }
+
+        if (i == 1) {
+            mProgressView.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+
+        if (i == 2) {
+            mDoneView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -60,7 +77,28 @@ public class NfcActivity extends Activity {
         if (token == null) {
             showScreen(0);
         }
+
         showScreen(1);
+
+        try {
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("facebookId", Profile.getCurrentProfile().getId());
+            jsonParams.put("tableId", table);
+
+            Api.getInstance().post(Api.Method.CHECK_IN, this, jsonParams, new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Log.e(TAG, "FAIL HTTP " + statusCode, throwable);
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    showScreen(2);
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
