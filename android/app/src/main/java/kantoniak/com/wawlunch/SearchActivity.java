@@ -63,7 +63,7 @@ public class SearchActivity extends Activity implements OnMapReadyCallback {
     };
 
     private static final String TAG = SearchActivity.class.getSimpleName();
-    private final static int DEFAULT_MAP_ZOOM = 13;
+    private final static int DEFAULT_MAP_ZOOM = 11;
 
     private SearchResultAdapter mSearchResultAdapter = new SearchResultAdapter(resultClickListener);
 
@@ -123,6 +123,9 @@ public class SearchActivity extends Activity implements OnMapReadyCallback {
     }
 
     private void startCenteringMap() {
+        LatLng defPos = new LatLng(52.256202, 21.045592);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defPos, DEFAULT_MAP_ZOOM));
+
         if (LocationUtils.hasLocationPermission(this)) {
             LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
