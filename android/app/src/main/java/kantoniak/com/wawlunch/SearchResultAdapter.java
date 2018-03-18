@@ -32,6 +32,8 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         public TextView mNameText;
         public TextView mStreetText;
         public ImageView mThumbView;
+        public TextView mOpenTextView;
+        public TextView mCommonPriceTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -39,13 +41,15 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             mNameText = itemView.findViewById(R.id.search_result_name);
             mStreetText = itemView.findViewById(R.id.search_result_street);
             mThumbView = itemView.findViewById(R.id.search_result_thumb);
+            mOpenTextView = itemView.findViewById(R.id.result_open);
+            mCommonPriceTextView = itemView.findViewById(R.id.result_common_price);
         }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.search_result_item_row, parent, false);
+            .inflate(R.layout.search_result_item_row, parent, false);
         return new ViewHolder(v);
     }
 
@@ -56,6 +60,13 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         holder.mItemView.setOnClickListener(clickListener);
         holder.mNameText.setText(place.getName());
         holder.mStreetText.setText(place.getStreet());
+
+        int zlote = place.getCommonPrice() / 100;
+        int grosze = place.getCommonPrice() % 100;
+
+        holder.mCommonPriceTextView.setText(String.format("%d,%02d zł", zlote, grosze));
+        holder.mOpenTextView.setText(place.getOpenFrom() + " - " + place.getOpenTo());
+
         Picasso.get().load(place.getPicture()).into(holder.mThumbView);
     }
 

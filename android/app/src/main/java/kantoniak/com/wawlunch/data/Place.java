@@ -22,13 +22,25 @@ public class Place {
     @SerializedName("picture")
     private final String picture;
 
-    public Place(int id, String name, double latitude, double longitude, String street, String picture) {
+    @SerializedName("commonPrice")
+    private final Integer commonPrice;
+
+    @SerializedName("openFrom")
+    private final String openFrom;
+
+    @SerializedName("openTo")
+    private final String openTo;
+
+    public Place(int id, String name, double latitude, double longitude, String street, String picture, String openFrom, String openTo, Integer commonPrice) {
         this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.street = street;
         this.picture = picture;
+        this.openFrom = openFrom;
+        this.openTo = openTo;
+        this.commonPrice = commonPrice;
     }
 
     public int getId() {
@@ -53,6 +65,18 @@ public class Place {
 
     public String getPicture() {
         return picture;
+    }
+
+    public String getOpenFrom() {
+        return openFrom;
+    }
+
+    public String getOpenTo() {
+        return openTo;
+    }
+
+    public Integer getCommonPrice() {
+        return commonPrice;
     }
 
     @Override
