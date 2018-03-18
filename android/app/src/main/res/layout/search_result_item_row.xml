@@ -5,79 +5,97 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
+        android:padding="@dimen/medium_padding"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"></LinearLayout>
+        android:layout_height="match_parent">
 
-    <ImageButton
-        android:layout_width="200px"
-        android:layout_height="200px"
-        android:src="@android:drawable/btn_star" />
+        <ImageButton
+            android:id="@+id/RestaurantImage"
+            android:layout_width="91dp"
+            android:layout_height="200px"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@android:drawable/btn_star" />
+
+        <TextView
+            android:id="@+id/search_result_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/RestaurantImage"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@+id/RestaurantImage"
+            android:padding="@dimen/medium_padding"
+            android:text="-Cabana Restaurant-"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/black"
+            android:textStyle="normal"
+            android:typeface="sans"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/reviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/search_result_name"
+            android:layout_below="@+id/search_result_name"
+            android:padding="@dimen/medium_padding"
+            android:text="109 reviews"
+            android:textColor="@color/colorDivider"
+            android:textSize="8sp" />
+
+        <TextView
+            android:id="@+id/street"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/type"
+            android:layout_below="@+id/type"
+            android:padding="@dimen/medium_padding"
+            android:text="Pl. Konstytucji"
+            android:textColor="@color/colorDivider"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/currency"
+            android:layout_below="@+id/currency"
+            android:padding="@dimen/medium_padding"
+            android:text="30m"
+            android:textColor="@color/colorDivider"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/distance"
+            android:layout_alignStart="@+id/reviews"
+            android:layout_alignTop="@+id/currency"
+            android:padding="@dimen/medium_padding"
+            android:text="Brazilian"
+            android:textAlignment="viewStart"
+            android:textColor="@color/colorDivider"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/reviews"
+            android:layout_marginEnd="12dp"
+            android:padding="@dimen/medium_padding"
+            android:text="$$"
+            android:textColor="@color/colorDivider"
+            android:textSize="10sp" />
+
+    </RelativeLayout>
 
     <tag android:id="@+id/list_item_place"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/street"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/medium_padding"
-                android:text="-street-" />
-
-            <TextView
-                android:id="@+id/distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/medium_padding"
-                android:text="-distance-" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-type-" />
-
-            <TextView
-                android:id="@+id/currency"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/medium_padding"
-                android:text="-currency-" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/search_result_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/medium_padding"
-                android:text="-PLACE NAME-"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/reviews"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/medium_padding"
-                android:text="-reviews-" />
-
-        </LinearLayout>
+    <tag android:id="@+id/list_item_street"/>
 
 
 </android.widget.LinearLayout>
