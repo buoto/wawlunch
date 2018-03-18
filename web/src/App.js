@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
+import {
+    BrowserRouter as Router,
+    Route,
+    Link
+} from 'react-router-dom'
 
-import Tutorial from "./components/tutorial/Tutorial";
-import Mobile from "./components/mobile/Mobile";
-import About from "./components/about/About";
-import Contact from "./components/contact/Contact";
-import Footer from "./components/footer/Footer";
+import Landing from "./components/landing/Landing";
+import Form from "./components/form/Form";
 
 import './App.css';
 
@@ -12,17 +14,12 @@ class App extends PureComponent {
   render() {
     return (
       <div className="app">
-          <div className="app__view">
-              <Mobile />
-              <Tutorial />
-          </div>
-          <div className="app__info">
-              <div className="app__info--columns">
-                  <About />
-                  <Contact />
+          <Router>
+              <div>
+                  <Route exact path="/" component={Landing}/>
+                  <Route path="/form" component={Form}/>
               </div>
-              <Footer />
-          </div>
+          </Router>
       </div>
     );
   }

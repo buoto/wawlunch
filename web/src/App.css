@@ -6,35 +6,3 @@
 body {
     font-family: 'Noto Sans', sans-serif;
 }
-
-.app__view {
-    height: 90vh;
-    display: flex;
-    justify-content: center;
-}
-
-.app__view > * {
-    padding: 30px;
-    justify-content: center;
-}
-
-.app__info {
-    background-color: #ff9100;
-    color: #fff;
-    padding-top: 10vh;
-}
-
-.app__info > * h2 {
-    font-size: 20px;
-    text-transform: uppercase;
-    border-bottom: 2px solid #fff;
-}
-
-.app__info--columns {
-    display: flex;
-    justify-content: space-around;
-}
-
-.app__info--columns > * {
-    margin: 0 50px 20px;
-}

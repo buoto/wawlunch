@@ -1,0 +1,40 @@
+.landing__view {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+}
+
+.landing__view > * {
+    padding: 30px;
+    justify-content: center;
+}
+
+.landing__info {
+    display: flex;
+    flex-direction: column;
+    background-color: #ff9100;
+    color: #fff;
+    padding-top: 10vh;
+}
+
+.landing__info > * h2 {
+    font-size: 20px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #fff;
+}
+
+.landing__info--columns {
+    display: flex;
+    justify-content: space-around;
+}
+
+.landing__info--columns > * {
+    margin: 0 50px 20px;
+}
+
+.landing__arrow {
+    height: 3vh;
+    margin-top: -6vh;
+    margin-bottom: 3vh;
+    align-self: center;
+}
