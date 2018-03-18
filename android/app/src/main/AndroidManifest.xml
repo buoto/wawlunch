@@ -49,8 +49,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA3altuoFSUyYXrtLLlslJM5EHBFF3RHvQ" />
 
-        <activity android:name=".PlaceActivity"
+        <activity
+            android:name=".PlaceActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        <activity
+            android:name=".AccountActivity"
+            android:label="@string/title_activity_account"></activity>
     </application>
 
 </manifest>

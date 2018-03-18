@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="kantoniak.com.wawlunch.SearchActivity">
+    <item
+        android:id="@+id/action_account"
+        android:icon="@drawable/ic_person_24dp"
+        android:title="Konto"
+        android:showAsAction="always"/>
+</menu>
