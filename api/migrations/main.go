@@ -19,19 +19,28 @@ var migrations = map[string]func(*gorm.DB){
 		m.DropColumn("updated_at")
 	},
 	"fill_places": func(db *gorm.DB) {
+		t12, _ := time.Parse(place.ClockFormat, "12:00")
+		t16, _ := time.Parse(place.ClockFormat, "16:00")
+
 		db.Create(&place.Place{
-			Name:      "Aioli",
-			Longitude: 21.011496,
-			Latitude:  52.2360099,
-			Street:    "Świętokrzyska 18",
-			Picture:   "http://buoto.me:8080/images/aioli_logo.jpg",
+			Name:        "Aioli",
+			Longitude:   21.011496,
+			Latitude:    52.2360099,
+			Street:      "Świętokrzyska 18",
+			Picture:     "http://buoto.me:8080/images/aioli_logo.jpg",
+			CommonPrice: 2200,
+			OpenFrom:    &t12,
+			OpenTo:      &t16,
 		})
 		db.Create(&place.Place{
-			Name:      "Orzo",
-			Longitude: 21.0152604,
-			Latitude:  52.2223586,
-			Street:    "plac Konstytucji 5",
-			Picture:   "http://buoto.me:8080/images/orzo_logo.png",
+			Name:        "Orzo",
+			Longitude:   21.0152604,
+			Latitude:    52.2223586,
+			Street:      "plac Konstytucji 5",
+			Picture:     "http://buoto.me:8080/images/orzo_logo.png",
+			CommonPrice: 2200,
+			OpenFrom:    &t12,
+			OpenTo:      &t16,
 		})
 	},
 	"fill_menus": func(db *gorm.DB) {

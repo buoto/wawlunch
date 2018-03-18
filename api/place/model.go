@@ -13,37 +13,38 @@ type Place struct {
 	Street    string  `json:"street"`
 	Picture   string  `json:"picture"`
 
+	OpenFrom *time.Time `json:"openFrom"`
+	OpenTo   *time.Time `json:"openTo"`
+
+	CommonPrice uint `json:"commonPrice"`
+
 	Menus []Menu `json:"-"`
 }
 
-const DateFormat = "2006-01-02"
+func (p *Place) UnmarshalJSON(data []byte) error {
+	type placeJSON Place
+	d := struct {
+		*placeJSON
+		OpenFrom *ClockTime `json:"openFrom"`
+		OpenTo   *ClockTime `json:"openTo"`
+	}{placeJSON: (*placeJSON)(p)}
 
-type Date time.Time
+	err := json.Unmarshal(data, &d)
 
-func (d *Date) MarshalJSON() ([]byte, error) {
-	b := make([]byte, 0, len(DateFormat)+2)
-	b = append(b, '"')
-	b = (*time.Time)(d).AppendFormat(b, DateFormat)
-	b = append(b, '"')
-
-	return b, nil
-}
-
-func (d *Date) UnmarshalJSON(data []byte) error {
-	// Ignore null, like in the main JSON package.
-	if string(data) == "null" {
-		return nil
-	}
-
-	// Fractional seconds are handled implicitly by Parse.
-	t, err := time.Parse(`"`+DateFormat+`"`, string(data))
-	*d = Date(t)
+	p.OpenFrom = (*time.Time)(d.OpenFrom)
+	p.OpenTo = (*time.Time)(d.OpenTo)
 	return err
 }
 
-func Today() *Date {
-	t := time.Now()
-	return (*Date)(&t)
+func (p *Place) MarshalJSON() ([]byte, error) {
+	type placeJSON Place
+	d := struct {
+		*placeJSON
+		OpenFrom *ClockTime `json:"openFrom"`
+		OpenTo   *ClockTime `json:"openTo"`
+	}{(*placeJSON)(p), (*ClockTime)(p.OpenFrom), (*ClockTime)(p.OpenTo)}
+
+	return json.Marshal(d)
 }
 
 type Menu struct {
