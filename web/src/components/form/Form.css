@@ -1,0 +1,78 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+}
+
+.form__header {
+    background-color: #ff9100;
+    height: 100px;
+    color: #fff;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.form__body {
+    width: 700px;
+    margin: 0 auto;
+    border: 1px solid #546e7a;
+    padding: 30px;
+    box-shadow: 1px 1px 4px #546e7a;
+    border-radius: 4px;
+}
+
+.form__button {
+    background-color: #546e7a;
+    padding: 10px 20px;
+    border: 1px solid #fff;
+    color: #fff;
+    width: 150px;
+    align-self: center;
+    border-radius: 3px;
+    margin: 10px;
+}
+
+.form__logo {
+    height: 80px;
+    margin: 10px;
+}
+
+.form__name {
+    text-transform: uppercase;
+    margin: 0 10px 10px;
+}
+
+.form__title {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.CalendarDay__selected, .CalendarDay__selected:hover {
+    background-color: #ff9100;
+    border: none;
+}
+
+.DayPickerKeyboardShortcuts_show__bottomRight {
+    border-right: 33px solid #ff9100;
+}
+
+.DateInput_input__focused {
+    border-color: #ff9100;
+}
+
+.DateInput {
+    width: 220px;
+    border-radius: 3px;
+    margin: 3px;
+}
+
+.SingleDatePickerInput__withBorder {
+    border: 1px solid #546e7a;
+    border-radius: 3px;
+}
+
+.DateInput_input {
+    border-radius: 3px;
+    padding: 0 10px;
+}

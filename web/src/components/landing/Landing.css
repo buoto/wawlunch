@@ -38,3 +38,10 @@
     margin-bottom: 3vh;
     align-self: center;
 }
+
+
+.landing__view--rows {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

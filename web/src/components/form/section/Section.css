@@ -1,0 +1,17 @@
+.section {
+    display: flex;
+    flex-direction: column;
+    color: rgba(0, 0, 0, 0.9);
+    margin-bottom: 20px;
+}
+
+.section__title {
+    margin: 3px;
+}
+
+.form__input {
+    margin: 3px;
+    border: 1px solid #546e7a;
+    border-radius: 3px;
+    padding: 5px 10px;
+}

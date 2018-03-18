@@ -9,6 +9,7 @@ import About from "../about/About";
 import arrow from "../../assets/icons/arrow.svg"
 
 import "./Landing.css";
+import Logo from "../logo/Logo";
 
 class Landing extends PureComponent {
     render() {
@@ -16,7 +17,10 @@ class Landing extends PureComponent {
             <div className="landing">
                 <div className="landing__view">
                     <Mobile />
-                    <Tutorial />
+                    <div className="landing__view--rows">
+                        <Logo />
+                        <Tutorial />
+                    </div>
                 </div>
                 <div className="landing__info">
                     <img src={arrow} className="landing__arrow" />
