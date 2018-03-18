@@ -6,8 +6,25 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import java.util.Arrays;
+import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
+import kantoniak.com.wawlunch.data.Api;
+import kantoniak.com.wawlunch.data.Menu;
+import kantoniak.com.wawlunch.data.Place;
 
 public class PlaceActivity extends AppCompatActivity implements MenuFragment.OnFragmentInteractionListener {
+
+    private static final String TAG = PlaceActivity.class.getSimpleName();
 
     private int placeId;
 
@@ -23,14 +40,11 @@ public class PlaceActivity extends AppCompatActivity implements MenuFragment.OnF
         if (intent == null) {
             return;
         }
-
-        setTitle(intent);
-        setupSlider();
-    }
-
-    private void setTitle(Intent intent) {
-        super.setTitle(intent.getStringExtra(ShowPlaceIntent.PLACE_NAME));
         placeId = intent.getIntExtra(ShowPlaceIntent.PLACE_ID, 0);
+
+        super.setTitle(intent.getStringExtra(ShowPlaceIntent.PLACE_NAME));
+        setupSlider();
+        fetchMenus(placeId);
     }
 
     private void setupSlider() {
@@ -45,6 +59,25 @@ public class PlaceActivity extends AppCompatActivity implements MenuFragment.OnF
 
         mPagerAdapter = new MenuAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
+    }
+
+    private void fetchMenus(int placeId) {
+        Api.getInstance().get(Api.Method.MENUS_PLACE_ID + Integer.toString(placeId), new TextHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String response) {
+                Gson gson = new GsonBuilder().create();
+                List<Menu> menus = Arrays.asList(gson.fromJson(response, Menu[].class));
+                Log.i(TAG, "SIZE: " + menus.size());
+                runOnUiThread(() -> {
+                    menus.stream().forEach(m -> Log.i(TAG, "DISHES " + m.getDishes().size()));
+                });
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.e(TAG, "FAIL HTTP " + statusCode, throwable);
+            }
+        });
     }
 
     @Override

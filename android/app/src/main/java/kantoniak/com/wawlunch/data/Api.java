@@ -6,7 +6,8 @@ import com.loopj.android.http.TextHttpResponseHandler;
 public class Api {
 
     public interface Method {
-        String PLACES = "places/";
+        String PLACES = "places";
+        String MENUS_PLACE_ID = "menus?placeId=";
     }
 
     private final static String API_HOST = "http://buoto.me:8080/";
