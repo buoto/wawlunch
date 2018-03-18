@@ -48,6 +48,28 @@
     color: rgba(0, 0, 0, 0.7);
 }
 
+.modal {
+    display: flex;
+    align-items: center;
+}
+
+.modal__text {
+    margin: 15px;
+    color: rgba(0, 0, 0, 0.9);
+}
+
+.modal__icon--wrapper {
+    background-color: #ff9100;
+    border-radius: 50%;
+    padding: 15px;
+    margin: 15px;
+}
+
+.modal__icon {
+    width: 30px;
+    height: 30px;
+}
+
 .CalendarDay__selected, .CalendarDay__selected:hover {
     background-color: #ff9100;
     border: none;
