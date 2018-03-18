@@ -6,12 +6,13 @@ import (
 )
 
 type Place struct {
-	ID        uint    `json:"id" gorm:"primary_key"`
-	Name      string  `json:"name" gorm:"unique;not null"`
-	Latitude  float64 `json:"latitude"`
-	Longitude float64 `json:"longitude"`
-	Street    string  `json:"street"`
-	Picture   string  `json:"picture"`
+	ID          uint    `json:"id" gorm:"primary_key"`
+	Name        string  `json:"name" gorm:"unique;not null"`
+	Latitude    float64 `json:"latitude"`
+	Longitude   float64 `json:"longitude"`
+	Street      string  `json:"street"`
+	Picture     string  `json:"picture"`
+	InsidePhoto string  `json:"insidePhoto"`
 
 	OpenFrom *time.Time `json:"openFrom"`
 	OpenTo   *time.Time `json:"openTo"`
