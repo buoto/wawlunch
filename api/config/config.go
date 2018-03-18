@@ -9,6 +9,8 @@ import (
 type Config struct {
 	Addr               string `json:"addr"`
 	DBConnectionString string `json:"dbConnectionString"`
+	StaticRoot         string `json:"staticRoot"`
+	URL                string `json:"url"`
 }
 
 func Load(pathEnv, path string) (Config, error) {

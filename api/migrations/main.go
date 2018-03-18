@@ -24,12 +24,14 @@ var migrations = map[string]func(*gorm.DB){
 			Longitude: 21.011496,
 			Latitude:  52.2360099,
 			Street:    "Świętokrzyska 18",
+			Picture:   "http://buoto.me:8080/images/aioli_logo.jpg",
 		})
 		db.Create(&place.Place{
 			Name:      "Orzo",
 			Longitude: 21.0152604,
 			Latitude:  52.2223586,
 			Street:    "plac Konstytucji 5",
+			Picture:   "http://buoto.me:8080/images/orzo_logo.png",
 		})
 	},
 	"fill_menus": func(db *gorm.DB) {

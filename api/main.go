@@ -42,6 +42,8 @@ func main() {
 		http.MethodGet: handlerError,
 	})))
 
+	http.Handle("/images/", http.FileServer(http.Dir(conf.StaticRoot)))
+
 	log.Println("Running server on:", conf.Addr)
 	log.Fatal(http.ListenAndServe(conf.Addr, nil)) // TODO: Add timeout on prod
 }

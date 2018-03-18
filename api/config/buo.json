@@ -1,7 +1,7 @@
 {
   "dbConnectionString":
     "host=/var/run/postgresql/ dbname=wawlunch sslmode=disable",
-  "addr": ":8080",
+  "addr": ":8081",
   "staticRoot": "./static/",
-  "url": "http://localhost:8080"
+  "url": "http://buoto.me:8080"
 }
