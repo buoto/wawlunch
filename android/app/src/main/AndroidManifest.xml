@@ -30,14 +30,18 @@
         </activity>
         <activity android:name=".NfcActivity">
             <intent-filter>
-                <action android:name="android.nfc.action.TECH_DISCOVERED"/>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="application/com.kantoniak.wawlunch" />
             </intent-filter>
-            <meta-data android:name="android.nfc.action.TECH_DISCOVERED"
+
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
 
@@ -45,7 +49,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA3altuoFSUyYXrtLLlslJM5EHBFF3RHvQ" />
 
-        <activity android:name=".PlaceActivity" />
+        <activity android:name=".PlaceActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
     </application>
 
 </manifest>

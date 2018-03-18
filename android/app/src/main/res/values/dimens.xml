@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="double_padding">16dp</dimen>
     <dimen name="regular_padding">8dp</dimen>
     <dimen name="medium_padding">4dp</dimen>
+
+    <dimen name="menu_slider_hor_padding">48dp</dimen>
+    <dimen name="menu_slider_vert_padding">16dp</dimen>
+    <dimen name="menu_slider_menu_margin">16dp</dimen>
 </resources>
