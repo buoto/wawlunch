@@ -50,7 +50,7 @@ func ListMenus(db *gorm.DB) http.HandlerFunc {
 			q = q.Where("place_id = ?", placeID)
 		}
 
-		q.Find(&menus)
+		q.Preload("Dishes").Find(&menus)
 
 		json.NewEncoder(w).Encode(menus)
 	}
