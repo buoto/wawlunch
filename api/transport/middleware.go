@@ -13,6 +13,14 @@ func ChainMiddlewares(middlewares ...Middleware) func(http.HandlerFunc) http.Han
 	}
 }
 
+func CORSMiddleware(f http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "content-type")
+		f(w, r)
+	}
+}
+
 func JSONMiddleware(f http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")

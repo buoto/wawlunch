@@ -29,15 +29,16 @@ func main() {
 	}
 	defer db.Close()
 
-	middlewares := transport.ChainMiddlewares(transport.JSONMiddleware)
+	middlewares := transport.ChainMiddlewares(transport.CORSMiddleware, transport.JSONMiddleware)
 
 	http.HandleFunc("/places/", middlewares(transport.Methods(map[string]http.HandlerFunc{
 		http.MethodGet:  place.List(db),
 		http.MethodPost: place.Create(db),
 	})))
 	http.HandleFunc("/menus/", middlewares(transport.Methods(map[string]http.HandlerFunc{
-		http.MethodGet:  place.ListMenus(db),
-		http.MethodPost: place.CreateMenus(db),
+		http.MethodGet:     place.ListMenus(db),
+		http.MethodPost:    place.CreateMenus(db),
+		http.MethodOptions: transport.Preflight("POST, GET, OPTIONS"),
 	})))
 	http.HandleFunc("/checkin/", middlewares(transport.Methods(map[string]http.HandlerFunc{
 		http.MethodGet: place.TableCheckIn(db),
