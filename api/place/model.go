@@ -13,7 +13,7 @@ type Place struct {
 	Street    string  `json:"street"`
 	Picture   string  `json:"picture"`
 
-	Menus []Menu `json:"-" gorm:"foreignkey:PlaceID"`
+	Menus []Menu `json:"-"`
 }
 
 const DateFormat = "2006-01-02"
@@ -48,10 +48,10 @@ func Today() *Date {
 
 type Menu struct {
 	ID      uint       `json:"id" gorm:"primary_key"`
-	PlaceID uint       `json:"placeId" gorm:"index;not null"`
-	Date    *time.Time `json:"date" gormw:"unique_index:place_id;not null"`
+	PlaceID uint       `json:"placeId" gorm:"unique_index:unique_date_place;not null"`
+	Date    *time.Time `json:"date" gorm:"unique_index:unique_date_place;not null"`
 	Price   uint       `json:"price" gorm:"not null"`
-	Dishes  []Dish     `json:"dishes" gorm:"foreignkey:MenuID"`
+	Dishes  []Dish     `json:"dishes"`
 }
 
 func (m *Menu) MarshalJSON() ([]byte, error) {
@@ -71,7 +71,7 @@ func (m *Menu) UnmarshalJSON(data []byte) error {
 		Date *Date `json:"date"`
 	}{menuJSON: (*menuJSON)(m)}
 
-	err := json.Unmarshal(data, d)
+	err := json.Unmarshal(data, &d)
 
 	m.Date = (*time.Time)(d.Date)
 	return err
@@ -88,11 +88,11 @@ const (
 
 type Dish struct {
 	ID     uint `json:"id" gorm:"primary_key"`
-	MenuID uint `json:"menuId" gorm:"index;not null"`
+	MenuID uint `json:"menuId" gorm:"unique_index:unique_name_menu;not null"`
 
-	Name   string   `json:"name" gorm:"unique;not null"`
+	Name   string   `json:"name" gorm:"unique_index:unique_name_menu;not null"`
 	Type   DishType `json:"type" gorm:"size:4;not null"`
-	IsVege bool     `json:"isVege" gorm:"not null"`
+	IsVege bool     `json:"isVege" gorm:"not null;default:false"`
 
 	ExtraPrice uint `json:"extraPrice,omitempty"`
 }

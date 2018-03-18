@@ -42,6 +42,7 @@ var migrations = map[string]func(*gorm.DB){
 		}
 
 		now := time.Now()
+		tomorrow := now.Add(time.Hour * 24)
 
 		db.Create(&place.Menu{
 			PlaceID: places[0].ID,
@@ -50,7 +51,7 @@ var migrations = map[string]func(*gorm.DB){
 		})
 		db.Create(&place.Menu{
 			PlaceID: places[0].ID,
-			Date:    &now,
+			Date:    &tomorrow,
 			Price:   2300,
 		})
 

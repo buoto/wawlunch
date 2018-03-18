@@ -29,9 +29,9 @@ func Create(db *gorm.DB) http.HandlerFunc {
 			return
 		}
 
-		db.Create(&place)
+		q := db.Create(&place)
 
-		if err = transport.DBErrors(w, db); err != nil {
+		if err = transport.DBErrors(w, q); err != nil {
 			http.Error(w, transport.ErrorJSON(err.Error()), http.StatusBadRequest)
 			return
 		}
@@ -53,5 +53,38 @@ func ListMenus(db *gorm.DB) http.HandlerFunc {
 		q.Preload("Dishes").Find(&menus)
 
 		json.NewEncoder(w).Encode(menus)
+	}
+}
+
+func CreateMenus(db *gorm.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var menu Menu
+
+		err := json.NewDecoder(r.Body).Decode(&menu)
+		if err != nil {
+			http.Error(w, transport.ErrorJSON("Error unmarshalling Menu: %v", err), http.StatusBadRequest)
+			return
+		}
+
+		q := db.Create(&menu)
+		q = db.Save(&menu)
+
+		if err = transport.DBErrors(w, q); err != nil {
+			http.Error(w, transport.ErrorJSON(err.Error()), http.StatusBadRequest)
+			return
+		}
+
+		json.NewEncoder(w).Encode(menu)
+	}
+}
+
+func TableCheckIn(db *gorm.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// TODO: check user
+		// TODO: check tag
+
+		// TODO: checkin
+
+		// TODO: return status
 	}
 }
