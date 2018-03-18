@@ -128,11 +128,23 @@ var migrations = map[string]func(*gorm.DB){
 		}
 
 		now := time.Now()
+		n1 := now.Add(time.Hour * 24)
+		n2 := n1.Add(time.Hour * 24)
 
 		db.Create(&place.Menu{
 			PlaceID: places[0].ID,
 			Date:    &now,
 			Price:   2200,
+		})
+		db.Create(&place.Menu{
+			PlaceID: places[0].ID,
+			Date:    &n1,
+			Price:   2200,
+		})
+		db.Create(&place.Menu{
+			PlaceID: places[0].ID,
+			Date:    &n2,
+			Price:   2300,
 		})
 		db.Create(&place.Menu{
 			PlaceID: places[1].ID,
@@ -184,6 +196,63 @@ var migrations = map[string]func(*gorm.DB){
 			Type:       place.Drink,
 			IsVege:     true,
 			ExtraPrice: 400,
+		})
+
+		db.Create(&place.Dish{
+			Name:   "Pikantna zupa rybna",
+			MenuID: menus[1].ID,
+			Type:   place.Soup,
+			IsVege: false,
+		})
+		db.Create(&place.Dish{
+			Name:   "Pierogi z farszem z kaczki",
+			MenuID: menus[1].ID,
+			Type:   place.Main,
+			IsVege: false,
+		})
+		db.Create(&place.Dish{
+			Name:   "Golonka duszona w piwie",
+			MenuID: menus[1].ID,
+			Type:   place.Main,
+			IsVege: false,
+		})
+		db.Create(&place.Dish{
+			Name:   "Lody czekoladowe",
+			MenuID: menus[1].ID,
+			Type:   place.Dessert,
+			IsVege: true,
+		})
+		db.Create(&place.Dish{
+			Name:       "Kompot malinowy",
+			MenuID:     menus[1].ID,
+			Type:       place.Drink,
+			IsVege:     true,
+			ExtraPrice: 400,
+		})
+
+		db.Create(&place.Dish{
+			Name:   "Zupa grzybowa",
+			MenuID: menus[2].ID,
+			Type:   place.Soup,
+			IsVege: false,
+		})
+		db.Create(&place.Dish{
+			Name:   "Śledzie na dwa sposoby",
+			MenuID: menus[2].ID,
+			Type:   place.Main,
+			IsVege: false,
+		})
+		db.Create(&place.Dish{
+			Name:   "Paszteciarnia",
+			MenuID: menus[2].ID,
+			Type:   place.Main,
+			IsVege: false,
+		})
+		db.Create(&place.Dish{
+			Name:   "Tatar z tuńczyka",
+			MenuID: menus[2].ID,
+			Type:   place.Main,
+			IsVege: false,
 		})
 	},
 }
